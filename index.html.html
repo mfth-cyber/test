@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeedHelp — WoW: Forever Power Leveling & Boosting</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Rajdhani for Gaming Headers -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        gaming: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        bgMain: '#0b0e14',
+                        bgCard: '#131722',
+                        bgCardHover: '#191f2e',
+                        borderSubtle: '#222838',
+                        accentGold: '#f59e0b',
+                        accentGoldHover: '#d97706',
+                        accentCyan: '#06b6d4',
+                        hordeRed: '#dc2626',
+                        allianceBlue: '#2563eb'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0b0e14;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* Custom Range Slider Styling (Overgear Style) */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #1e2436;
+            border-radius: 999px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #f59e0b;
+            border: 3px solid #0b0e14;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+            cursor: pointer;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            background: #fbbf24;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #f59e0b;
+            border: 3px solid #0b0e14;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+            cursor: pointer;
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+
+        /* Subtle Ambient Glow */
+        .hero-glow {
+            background: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.12) 0%, rgba(6, 182, 212, 0.05) 40%, rgba(11, 14, 20, 0) 75%);
+        }
+
+        /* Hide number input arrows */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-amber-500 selection:text-black">
+
+    <!-- ===================================================================== -->
+    <!-- CONFIGURATION SECTION (EDIT DISCORD LINK & BASE PRICES EASILY HERE)   -->
+    <!-- ===================================================================== -->
+    <script>
+        const CONFIG = {
+            brandName: "NeedHelp",
+            // Ganti link di bawah ini dengan link invite Discord server kamu nanti:
+            discordInviteUrl: "https://discord.gg/needhelp", 
+            currencySymbol: "$",
+            // Harga dasar per level berdasarkan bracket (dalam USD, bisa disesuaikan)
+            pricePerLevel: {
+                tier1_20: 0.60,   // Level 1 - 20 (Murah & Cepat)
+                tier21_40: 1.10,  // Level 21 - 40 (Menengah)
+                tier41_50: 1.80,  // Level 41 - 50 (Menengah ke Atas)
+                tier51_60: 2.75   // Level 51 - 60 (Endgame / Paling Berat)
+            },
+            // Estimasi jam pengerjaan per level berdasarkan bracket
+            hoursPerLevel: {
+                tier1_20: 0.35,
+                tier21_40: 0.75,
+                tier41_50: 1.30,
+                tier51_60: 2.20
+            },
+            addons: {
+                expressMultiplier: 0.25, // +25% biaya untuk Express
+                streamMultiplier: 0.10   // +10% biaya untuk Live Stream
+            }
+        };
+    </script>
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-40 bg-[#0b0e14]/90 backdrop-blur-md border-b border-borderSubtle">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2.5 group">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-bolt text-black text-lg"></i>
+                </div>
+                <span class="font-gaming font-bold text-2xl tracking-wider text-white">
+                    NEED<span class="text-amber-500">HELP</span>
+                </span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#calculator" class="hover:text-amber-400 transition-colors">Power Leveling</a>
+                <a href="#guarantees" class="hover:text-amber-400 transition-colors">Why Us</a>
+                <a href="#how-it-works" class="hover:text-amber-400 transition-colors">How It Works</a>
+                <a href="#faq" class="hover:text-amber-400 transition-colors">FAQ</a>
+            </nav>
+
+            <!-- Discord CTA Button -->
+            <div class="flex items-center gap-3">
+                <a id="navDiscordBtn" href="https://discord.gg/needhelp" target="_blank" rel="noopener noreferrer"
+                   class="inline-flex items-center gap-2 bg-[#5865F2] hover:bg-[#4752C4] text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-md shadow-[#5865F2]/20 transition-all">
+                    <i class="fa-brands fa-discord text-base"></i>
+                    <span>Join Discord</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO & INTERACTIVE CALCULATOR SECTION -->
+    <main id="calculator" class="relative hero-glow pt-8 pb-16 sm:pt-12 sm:pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Game Tag & Title -->
+            <div class="mb-8">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    WoW: Forever • Boosters Online
+                </div>
+                <h1 class="font-gaming text-3xl sm:text-5xl font-bold text-white tracking-tight">
+                    WoW: Forever — <span class="text-amber-500">Custom Power Leveling</span>
+                </h1>
+                <p class="mt-2 text-slate-400 text-sm sm:text-base max-w-2xl">
+                    Select your exact current and target level. 100% hand-leveled by verified veteran players with country-matched VPN protection.
+                </p>
+            </div>
+
+            <!-- MAIN GRID: LEFT (CONTROLS) & RIGHT (SUMMARY CARD) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- LEFT COLUMN: CONFIGURATION PANEL (7 Cols) -->
+                <div class="lg:col-span-7 space-y-6">
+                    
+                    <!-- Step 1: Region, Faction & Class -->
+                    <div class="bg-bgCard border border-borderSubtle rounded-2xl p-5 sm:p-6 shadow-xl">
+                        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold">1</span>
+                            Character Details
+                        </h2>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                            <!-- Region Selector -->
+                            <div>
+                                <label class="block text-xs font-medium text-slate-400 mb-2">Region</label>
+                                <div class="grid grid-cols-2 gap-2 bg-[#0b0e14] p-1 rounded-xl border border-borderSubtle">
+                                    <button type="button" onclick="setRegion('US')" id="btn-region-US"
+                                            class="region-btn py-2 rounded-lg text-sm font-semibold transition-all bg-amber-500 text-black shadow">
+                                        US / Americas
+                                    </button>
+                                    <button type="button" onclick="setRegion('EU')" id="btn-region-EU"
+                                            class="region-btn py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition-all">
+                                        Europe (EU)
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Faction Selector -->
+                            <div>
+                                <label class="block text-xs font-medium text-slate-400 mb-2">Faction</label>
+                                <div class="grid grid-cols-2 gap-2 bg-[#0b0e14] p-1 rounded-xl border border-borderSubtle">
+                                    <button type="button" onclick="setFaction('Horde')" id="btn-faction-Horde"
+                                            class="faction-btn py-2 rounded-lg text-sm font-semibold transition-all bg-red-600/20 border border-red-500/50 text-red-400 flex items-center justify-center gap-1.5">
+                                        <i class="fa-solid fa-fire text-xs"></i> Horde
+                                    </button>
+                                    <button type="button" onclick="setFaction('Alliance')" id="btn-faction-Alliance"
+                                            class="faction-btn py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+                                        <i class="fa-solid fa-shield-halved text-xs"></i> Alliance
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Class Dropdown -->
+                        <div>
+                            <label for="classSelect" class="block text-xs font-medium text-slate-400 mb-2">Character Class</label>
+                            <div class="relative">
+                                <select id="classSelect" onchange="updateSummary()"
+                                        class="w-full appearance-none bg-[#0b0e14] border border-borderSubtle hover:border-slate-600 focus:border-amber-500 rounded-xl px-4 py-3 text-sm font-medium text-white outline-none transition-colors cursor-pointer">
+                                    <option value="Mage">Mage</option>
+                                    <option value="Warrior">Warrior</option>
+                                    <option value="Rogue">Rogue</option>
+                                    <option value="Priest">Priest</option>
+                                    <option value="Hunter">Hunter</option>
+                                    <option value="Warlock">Warlock</option>
+                                    <option value="Paladin">Paladin</option>
+                                    <option value="Shaman">Shaman</option>
+                                    <option value="Druid">Druid</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Custom Level Range Sliders -->
+                    <div class="bg-bgCard border border-borderSubtle rounded-2xl p-5 sm:p-6 shadow-xl">
+                        <div class="flex items-center justify-between mb-5">
+                            <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold">2</span>
+                                Select Level Range
+                            </h2>
+                            <!-- Quick Presets -->
+                            <div class="flex gap-1.5">
+                                <button type="button" onclick="applyPreset(1, 60)" class="text-xs px-2.5 py-1 rounded-md bg-[#0b0e14] hover:bg-amber-500/20 border border-borderSubtle hover:border-amber-500/40 text-slate-300 hover:text-amber-400 transition-colors">
+                                    1 → 60
+                                </button>
+                                <button type="button" onclick="applyPreset(40, 60)" class="text-xs px-2.5 py-1 rounded-md bg-[#0b0e14] hover:bg-amber-500/20 border border-borderSubtle hover:border-amber-500/40 text-slate-300 hover:text-amber-400 transition-colors">
+                                    40 → 60
+                                </button>
+                                <button type="button" onclick="applyPreset(50, 60)" class="text-xs px-2.5 py-1 rounded-md bg-[#0b0e14] hover:bg-amber-500/20 border border-borderSubtle hover:border-amber-500/40 text-slate-300 hover:text-amber-400 transition-colors">
+                                    50 → 60
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Level Inputs & Sliders -->
+                        <div class="space-y-6">
+                            <!-- Current Level -->
+                            <div class="bg-[#0b0e14] p-4 rounded-xl border border-borderSubtle">
+                                <div class="flex items-center justify-between mb-3">
+                                    <label for="currentLevelInput" class="text-sm font-medium text-slate-300">Current Level</label>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-slate-500">LVL</span>
+                                        <input type="number" id="currentLevelInput" min="1" max="59" value="1"
+                                               oninput="handleNumberInput('current')"
+                                               class="w-16 text-center bg-bgCard border border-borderSubtle focus:border-amber-500 rounded-lg py-1.5 text-base font-bold text-white outline-none">
+                                    </div>
+                                </div>
+                                <input type="range" id="currentLevelSlider" min="1" max="59" value="1"
+                                       oninput="handleSliderInput('current')">
+                                <div class="flex justify-between text-[11px] text-slate-500 mt-1.5 font-medium">
+                                    <span>1</span>
+                                    <span>15</span>
+                                    <span>30</span>
+                                    <span>45</span>
+                                    <span>59</span>
+                                </div>
+                            </div>
+
+                            <!-- Desired Level -->
+                            <div class="bg-[#0b0e14] p-4 rounded-xl border border-borderSubtle">
+                                <div class="flex items-center justify-between mb-3">
+                                    <label for="desiredLevelInput" class="text-sm font-medium text-slate-300">Desired Target Level</label>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-slate-500">LVL</span>
+                                        <input type="number" id="desiredLevelInput" min="2" max="60" value="60"
+                                               oninput="handleNumberInput('desired')"
+                                               class="w-16 text-center bg-bgCard border border-borderSubtle focus:border-amber-500 rounded-lg py-1.5 text-base font-bold text-amber-400 outline-none">
+                                    </div>
+                                </div>
+                                <input type="range" id="desiredLevelSlider" min="2" max="60" value="60"
+                                       oninput="handleSliderInput('desired')">
+                                <div class="flex justify-between text-[11px] text-slate-500 mt-1.5 font-medium">
+                                    <span>2</span>
+                                    <span>15</span>
+                                    <span>30</span>
+                                    <span>45</span>
+                                    <span>60 (MAX)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Extra Options / Add-ons -->
+                    <div class="bg-bgCard border border-borderSubtle rounded-2xl p-5 sm:p-6 shadow-xl">
+                        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold">3</span>
+                            Additional Options
+                        </h2>
+
+                        <div class="space-y-3">
+                            <!-- Express Option -->
+                            <label class="flex items-center justify-between p-3.5 rounded-xl bg-[#0b0e14] border border-borderSubtle hover:border-slate-600 cursor-pointer transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="addonExpress" onchange="updateSummary()"
+                                           class="w-4 h-4 rounded accent-amber-500 cursor-pointer">
+                                    <div>
+                                        <div class="text-sm font-semibold text-white flex items-center gap-2">
+                                            Express Priority Delivery
+                                            <span class="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400">30% Faster</span>
+                                        </div>
+                                        <p class="text-xs text-slate-400">Assigned immediately to top-speed booster shifts.</p>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-bold text-amber-400">+25%</span>
+                            </label>
+
+                            <!-- Live Stream Option -->
+                            <label class="flex items-center justify-between p-3.5 rounded-xl bg-[#0b0e14] border border-borderSubtle hover:border-slate-600 cursor-pointer transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="addonStream" onchange="updateSummary()"
+                                           class="w-4 h-4 rounded accent-amber-500 cursor-pointer">
+                                    <div>
+                                        <div class="text-sm font-semibold text-white">Private Discord Live Stream</div>
+                                        <p class="text-xs text-slate-400">Watch your character level up live in private voice/screen share.</p>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-bold text-slate-300">+10%</span>
+                            </label>
+
+                            <!-- Keep Gold & Loot (Free included) -->
+                            <label class="flex items-center justify-between p-3.5 rounded-xl bg-[#0b0e14] border border-emerald-500/30 cursor-pointer">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="addonLoot" checked disabled
+                                           class="w-4 h-4 rounded accent-emerald-500">
+                                    <div>
+                                        <div class="text-sm font-semibold text-white">Keep All Gold, BoEs & Quest Loot</div>
+                                        <p class="text-xs text-slate-400">Every single copper and item earned stays on your account.</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold uppercase px-2 py-1 rounded bg-emerald-500/20 text-emerald-400">FREE</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT COLUMN: STICKY ORDER SUMMARY CARD (5 Cols) -->
+                <div class="lg:col-span-5 lg:sticky lg:top-24">
+                    <div class="bg-bgCard border border-amber-500/30 rounded-2xl p-6 shadow-2xl shadow-black/50">
+                        <div class="flex items-center justify-between pb-4 border-b border-borderSubtle">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Order Summary</span>
+                            <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-400">
+                                <i class="fa-solid fa-shield-check"></i> VPN Protected
+                            </span>
+                        </div>
+
+                        <!-- Level Visual Display -->
+                        <div class="my-5 bg-[#0b0e14] rounded-xl p-4 border border-borderSubtle flex items-center justify-between">
+                            <div>
+                                <span class="text-xs text-slate-400 block">Level Boost</span>
+                                <div class="font-gaming text-2xl sm:text-3xl font-bold text-white mt-0.5">
+                                    Level <span id="summaryStartLvl" class="text-slate-300">1</span>
+                                    <i class="fa-solid fa-arrow-right text-amber-500 text-lg mx-1.5"></i>
+                                    <span id="summaryEndLvl" class="text-amber-400">60</span>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold">
+                                    +<span id="summaryTotalLvls">59</span> Levels
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Selected Specs Breakdown -->
+                        <div class="space-y-2.5 text-sm pb-5 border-b border-borderSubtle">
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Game / Service</span>
+                                <span class="font-medium text-white">WoW: Forever Leveling</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Region & Faction</span>
+                                <span id="summaryRegionFaction" class="font-medium text-white">US • Horde</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Class</span>
+                                <span id="summaryClass" class="font-medium text-white">Mage</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Method</span>
+                                <span class="font-medium text-white">Piloted (100% Manual)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Est. Completion</span>
+                                <span id="summaryEstTime" class="font-semibold text-cyan-400">~3 Days 12 Hours</span>
+                            </div>
+                        </div>
+
+                        <!-- Total Price -->
+                        <div class="py-5 flex items-end justify-between">
+                            <div>
+                                <span class="text-xs text-slate-400 block">Total Price</span>
+                                <span class="text-[11px] text-slate-500">No hidden fees • Escrow safe</span>
+                            </div>
+                            <div class="text-right">
+                                <span id="summaryPrice" class="font-gaming text-4xl font-bold text-white">$84.75</span>
+                            </div>
+                        </div>
+
+                        <!-- Primary Order Button -->
+                        <button type="button" onclick="openOrderModal()"
+                                class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black font-bold text-base shadow-lg shadow-amber-500/25 transform active:scale-[0.99] transition-all flex items-center justify-center gap-2.5 cursor-pointer">
+                            <i class="fa-brands fa-discord text-xl"></i>
+                            <span>Order Now via Discord</span>
+                        </button>
+
+                        <!-- Payment Badges -->
+                        <div class="mt-4 pt-4 border-t border-borderSubtle/60 flex items-center justify-center gap-4 text-slate-500 text-xs">
+                            <span class="flex items-center gap-1"><i class="fa-brands fa-bitcoin text-amber-500/80"></i> Crypto / USDT</span>
+                            <span>•</span>
+                            <span class="flex items-center gap-1"><i class="fa-brands fa-paypal text-blue-400/80"></i> PayPal</span>
+                            <span>•</span>
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-building-columns text-emerald-400/80"></i> Wise / Bank</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- TRUST BADGES / WHY CHOOSE US -->
+    <section id="guarantees" class="py-16 bg-[#0e121a] border-y border-borderSubtle">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="font-gaming text-3xl font-bold text-white">Why Players Trust <span class="text-amber-500">NeedHelp</span></h2>
+                <p class="text-slate-400 text-sm mt-2">Your account security is our #1 priority. Every boost follows strict safety protocols.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-bgCard border border-borderSubtle p-6 rounded-2xl hover:border-amber-500/40 transition-colors">
+                    <div class="w-11 h-11 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-hand-fist"></i>
+                    </div>
+                    <h3 class="font-bold text-white text-base mb-2">100% Hand-Leveled</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">Zero bots, zero scripts, zero exploits. Every quest and dungeon is played manually by experienced WoW veterans.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-bgCard border border-borderSubtle p-6 rounded-2xl hover:border-cyan-500/40 transition-colors">
+                    <div class="w-11 h-11 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <h3 class="font-bold text-white text-base mb-2">Country-Matched VPN</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">Our boosters always connect using a dedicated VPN matched to your country/region to prevent suspicious login flags.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-bgCard border border-borderSubtle p-6 rounded-2xl hover:border-emerald-500/40 transition-colors">
+                    <div class="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h3 class="font-bold text-white text-base mb-2">Escrow Protection</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">Your payment is held safely by NeedHelp management and only released to the booster after your order is 100% completed.</p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-bgCard border border-borderSubtle p-6 rounded-2xl hover:border-indigo-500/40 transition-colors">
+                    <div class="w-11 h-11 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h3 class="font-bold text-white text-base mb-2">Daily Progress Updates</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">Get regular level screenshots in your private Discord ticket and schedule play windows anytime you want to log in.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section id="how-it-works" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="font-gaming text-3xl font-bold text-white">How It <span class="text-amber-500">Works</span></h2>
+                <p class="text-slate-400 text-sm mt-2">Simple, fast, and transparent process from start to finish.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="relative bg-bgCard border border-borderSubtle p-6 rounded-2xl">
+                    <span class="font-gaming text-5xl font-bold text-amber-500/15 absolute top-4 right-5">01</span>
+                    <div class="text-amber-400 font-bold text-sm mb-2">STEP 1</div>
+                    <h3 class="text-lg font-bold text-white mb-2">Configure Your Boost</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Use the calculator above to pick your Region, Faction, Class, and exact Current-to-Target levels.</p>
+                </div>
+
+                <div class="relative bg-bgCard border border-borderSubtle p-6 rounded-2xl">
+                    <span class="font-gaming text-5xl font-bold text-amber-500/15 absolute top-4 right-5">02</span>
+                    <div class="text-amber-400 font-bold text-sm mb-2">STEP 2</div>
+                    <h3 class="text-lg font-bold text-white mb-2">Open Discord Ticket</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Click "Order Now", copy your generated order code, and paste it into a private ticket on our Discord server.</p>
+                </div>
+
+                <div class="relative bg-bgCard border border-borderSubtle p-6 rounded-2xl">
+                    <span class="font-gaming text-5xl font-bold text-amber-500/15 absolute top-4 right-5">03</span>
+                    <div class="text-amber-400 font-bold text-sm mb-2">STEP 3</div>
+                    <h3 class="text-lg font-bold text-white mb-2">Sit Back & Level Up</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Once confirmed, an assigned veteran booster starts right away while sending you daily progress updates.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq" class="py-16 bg-[#0e121a] border-t border-borderSubtle">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="font-gaming text-3xl font-bold text-white">Frequently Asked <span class="text-amber-500">Questions</span></h2>
+            </div>
+
+            <div class="space-y-3" id="faqContainer">
+                <!-- FAQ Item 1 -->
+                <div class="bg-bgCard border border-borderSubtle rounded-xl overflow-hidden">
+                    <button type="button" onclick="toggleFaq(this)" class="w-full px-5 py-4 text-left flex items-center justify-between font-semibold text-white text-sm hover:text-amber-400 transition-colors">
+                        <span>Is my account safe during Piloted Power Leveling?</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+                    </button>
+                    <div class="hidden px-5 pb-4 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-borderSubtle/50 pt-3">
+                        Yes. We strictly prohibit bots, hacks, or third-party automation. All leveling is performed manually by verified players using a VPN set to your country/region so your login pattern remains natural.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="bg-bgCard border border-borderSubtle rounded-xl overflow-hidden">
+                    <button type="button" onclick="toggleFaq(this)" class="w-full px-5 py-4 text-left flex items-center justify-between font-semibold text-white text-sm hover:text-amber-400 transition-colors">
+                        <span>Can I still log into my account while the boost is active?</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+                    </button>
+                    <div class="hidden px-5 pb-4 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-borderSubtle/50 pt-3">
+                        Of course! Just let your booster know in your private Discord ticket before logging in so they can safely log out and pause their session without overlapping logins.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-bgCard border border-borderSubtle rounded-xl overflow-hidden">
+                    <button type="button" onclick="toggleFaq(this)" class="w-full px-5 py-4 text-left flex items-center justify-between font-semibold text-white text-sm hover:text-amber-400 transition-colors">
+                        <span>What happens to the gold and items dropped during leveling?</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+                    </button>
+                    <div class="hidden px-5 pb-4 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-borderSubtle/50 pt-3">
+                        Everything belongs to you 100% free of charge. Our boosters never touch, trade, or spend your gold or valuable items (aside from basic vendor repairs/food if needed).
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="bg-bgCard border border-borderSubtle rounded-xl overflow-hidden">
+                    <button type="button" onclick="toggleFaq(this)" class="w-full px-5 py-4 text-left flex items-center justify-between font-semibold text-white text-sm hover:text-amber-400 transition-colors">
+                        <span>What payment methods do you accept?</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200"></i>
+                    </button>
+                    <div class="hidden px-5 pb-4 text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-borderSubtle/50 pt-3">
+                        We currently accept Crypto (USDT, BTC, LTC), PayPal, and Wise/Bank Transfers directly through our verified Discord ticket support.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#080a0f] border-t border-borderSubtle py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-md bg-amber-500 flex items-center justify-center">
+                    <i class="fa-solid fa-bolt text-black text-sm"></i>
+                </div>
+                <span class="font-gaming font-bold text-xl tracking-wider text-white">
+                    NEED<span class="text-amber-500">HELP</span>
+                </span>
+            </div>
+            <p class="text-xs text-slate-500 text-center sm:text-right max-w-md">
+                © 2026 NeedHelp Boosting Services. Not affiliated with or endorsed by Blizzard Entertainment. All game titles and trademarks belong to their respective owners.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- ORDER CONFIRMATION MODAL (COPY ORDER & OPEN DISCORD)                  -->
+    <!-- ===================================================================== -->
+    <div id="orderModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="bg-bgCard border border-amber-500/40 rounded-2xl max-w-md w-full p-6 shadow-2xl relative animate-fadeIn">
+            <!-- Close Button -->
+            <button type="button" onclick="closeOrderModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+                <div>
+                    <h3 class="font-gaming text-xl font-bold text-white">Your Order Ticket is Ready</h3>
+                    <p class="text-xs text-slate-400">Copy your details below & paste in our Discord ticket</p>
+                </div>
+            </div>
+
+            <!-- Formatted Order Text Box -->
+            <div class="bg-[#0b0e14] border border-borderSubtle rounded-xl p-4 mb-4">
+                <pre id="modalOrderText" class="text-xs font-mono text-slate-200 whitespace-pre-wrap leading-relaxed"></pre>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="space-y-3">
+                <button type="button" id="copyOrderBtn" onclick="copyOrderDetails()"
+                        class="w-full py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer">
+                    <i class="fa-regular fa-copy"></i>
+                    <span id="copyBtnText">1. Copy Order Details</span>
+                </button>
+
+                <a id="modalDiscordLink" href="https://discord.gg/needhelp" target="_blank" rel="noopener noreferrer"
+                   class="w-full py-3.5 px-4 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-[#5865F2]/25 transition-all">
+                    <i class="fa-brands fa-discord text-lg"></i>
+                    <span>2. Open Discord & Create Ticket</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- INTERACTIVE LOGIC & PRICING ENGINE                                    -->
+    <!-- ===================================================================== -->
+    <script>
+        // Application State
+        let state = {
+            region: 'US',
+            faction: 'Horde',
+            charClass: 'Mage',
+            currentLevel: 1,
+            desiredLevel: 60,
+            express: false,
+            stream: false
+        };
+
+        // Initialize Discord Links from CONFIG
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('navDiscordBtn').href = CONFIG.discordInviteUrl;
+            document.getElementById('modalDiscordLink').href = CONFIG.discordInviteUrl;
+            updateSummary();
+        });
+
+        // Region Selector
+        function setRegion(region) {
+            state.region = region;
+            document.querySelectorAll('.region-btn').forEach(btn => {
+                btn.className = 'region-btn py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition-all';
+            });
+            const activeBtn = document.getElementById(`btn-region-${region}`);
+            activeBtn.className = 'region-btn py-2 rounded-lg text-sm font-semibold transition-all bg-amber-500 text-black shadow';
+            updateSummary();
+        }
+
+        // Faction Selector
+        function setFaction(faction) {
+            state.faction = faction;
+            const hordeBtn = document.getElementById('btn-faction-Horde');
+            const allianceBtn = document.getElementById('btn-faction-Alliance');
+
+            if (faction === 'Horde') {
+                hordeBtn.className = 'faction-btn py-2 rounded-lg text-sm font-semibold transition-all bg-red-600/20 border border-red-500/50 text-red-400 flex items-center justify-center gap-1.5';
+                allianceBtn.className = 'faction-btn py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5';
+            } else {
+                allianceBtn.className = 'faction-btn py-2 rounded-lg text-sm font-semibold transition-all bg-blue-600/20 border border-blue-500/50 text-blue-400 flex items-center justify-center gap-1.5';
+                hordeBtn.className = 'faction-btn py-2 rounded-lg text-sm font-semibold text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5';
+            }
+            updateSummary();
+        }
+
+        // Quick Level Presets
+        function applyPreset(start, end) {
+            state.currentLevel = start;
+            state.desiredLevel = end;
+            syncInputs();
+            updateSummary();
+        }
+
+        // Handle Range Slider Input
+        function handleSliderInput(type) {
+            let cur = parseInt(document.getElementById('currentLevelSlider').value);
+            let des = parseInt(document.getElementById('desiredLevelSlider').value);
+
+            if (type === 'current') {
+                if (cur >= des) {
+                    des = Math.min(60, cur + 1);
+                }
+            } else {
+                if (des <= cur) {
+                    cur = Math.max(1, des - 1);
+                }
+            }
+
+            state.currentLevel = cur;
+            state.desiredLevel = des;
+            syncInputs();
+            updateSummary();
+        }
+
+        // Handle Direct Number Input
+        function handleNumberInput(type) {
+            let cur = parseInt(document.getElementById('currentLevelInput').value) || 1;
+            let des = parseInt(document.getElementById('desiredLevelInput').value) || 2;
+
+            cur = Math.max(1, Math.min(59, cur));
+            des = Math.max(2, Math.min(60, des));
+
+            if (type === 'current' && cur >= des) {
+                des = Math.min(60, cur + 1);
+            } else if (type === 'desired' && des <= cur) {
+                cur = Math.max(1, des - 1);
+            }
+
+            state.currentLevel = cur;
+            state.desiredLevel = des;
+            syncInputs();
+            updateSummary();
+        }
+
+        // Sync Sliders and Number Boxes
+        function syncInputs() {
+            document.getElementById('currentLevelSlider').value = state.currentLevel;
+            document.getElementById('currentLevelInput').value = state.currentLevel;
+            document.getElementById('desiredLevelSlider').value = state.desiredLevel;
+            document.getElementById('desiredLevelInput').value = state.desiredLevel;
+        }
+
+        // Tiered Price & Time Calculation Engine
+        function calculateBoostMetrics(startLvl, endLvl, isExpress, isStream) {
+            let basePrice = 0;
+            let baseHours = 0;
+
+            for (let lvl = startLvl; lvl < endLvl; lvl++) {
+                if (lvl <= 20) {
+                    basePrice += CONFIG.pricePerLevel.tier1_20;
+                    baseHours += CONFIG.hoursPerLevel.tier1_20;
+                } else if (lvl <= 40) {
+                    basePrice += CONFIG.pricePerLevel.tier21_40;
+                    baseHours += CONFIG.hoursPerLevel.tier21_40;
+                } else if (lvl <= 50) {
+                    basePrice += CONFIG.pricePerLevel.tier41_50;
+                    baseHours += CONFIG.hoursPerLevel.tier41_50;
+                } else {
+                    basePrice += CONFIG.pricePerLevel.tier51_60;
+                    baseHours += CONFIG.hoursPerLevel.tier51_60;
+                }
+            }
+
+            let multiplier = 1.0;
+            if (isExpress) {
+                multiplier += CONFIG.addons.expressMultiplier;
+                baseHours *= 0.70; // 30% faster completion
+            }
+            if (isStream) {
+                multiplier += CONFIG.addons.streamMultiplier;
+            }
+
+            const finalPrice = (basePrice * multiplier).toFixed(2);
+            return {
+                price: finalPrice,
+                hours: Math.max(1, Math.round(baseHours))
+            };
+        }
+
+        // Format Hours into Readable Days/Hours
+        function formatDuration(totalHours) {
+            if (totalHours < 24) {
+                return `~${totalHours} Hours`;
+            }
+            const days = Math.floor(totalHours / 24);
+            const hours = totalHours % 24;
+            return hours > 0 ? `~${days}d ${hours}h` : `~${days} Days`;
+        }
+
+        // Update UI Summary Panel
+        function updateSummary() {
+            state.charClass = document.getElementById('classSelect').value;
+            state.express = document.getElementById('addonExpress').checked;
+            state.stream = document.getElementById('addonStream').checked;
+
+            const metrics = calculateBoostMetrics(
+                state.currentLevel,
+                state.desiredLevel,
+                state.express,
+                state.stream
+            );
+
+            document.getElementById('summaryStartLvl').textContent = state.currentLevel;
+            document.getElementById('summaryEndLvl').textContent = state.desiredLevel;
+            document.getElementById('summaryTotalLvls').textContent = state.desiredLevel - state.currentLevel;
+            document.getElementById('summaryRegionFaction').textContent = `${state.region} • ${state.faction}`;
+            document.getElementById('summaryClass').textContent = state.charClass;
+            document.getElementById('summaryEstTime').textContent = formatDuration(metrics.hours);
+            document.getElementById('summaryPrice').textContent = `${CONFIG.currencySymbol}${metrics.price}`;
+        }
+
+        // Generate Order Receipt & Open Modal
+        function openOrderModal() {
+            const metrics = calculateBoostMetrics(
+                state.currentLevel,
+                state.desiredLevel,
+                state.express,
+                state.stream
+            );
+
+            const orderId = 'NH-' + Math.floor(1000 + Math.random() * 9000);
+            const addonsList = [];
+            if (state.express) addonsList.push('Express Delivery (+25%)');
+            if (state.stream) addonsList.push('Live Stream (+10%)');
+            addonsList.push('Keep All Gold & Loot (FREE)');
+
+            const receiptText = 
+`=== NEEDHELP BOOST ORDER ===
+Order ID : #${orderId}
+Game     : WoW: Forever (Power Leveling)
+Region   : ${state.region}
+Faction  : ${state.faction}
+Class    : ${state.charClass}
+Range    : Level ${state.currentLevel} -> Level ${state.desiredLevel}
+Add-ons  : ${addonsList.join(', ')}
+Est. Time: ${formatDuration(metrics.hours)}
+Total    : ${CONFIG.currencySymbol}${metrics.price}
+============================`;
+
+            document.getElementById('modalOrderText').textContent = receiptText;
+            document.getElementById('copyBtnText').textContent = '1. Copy Order Details';
+            
+            const modal = document.getElementById('orderModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeOrderModal() {
+            const modal = document.getElementById('orderModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Copy Order Details using fallback-safe execCommand
+        function copyOrderDetails() {
+            const textToCopy = document.getElementById('modalOrderText').textContent;
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = textToCopy;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextarea);
+
+            const btnText = document.getElementById('copyBtnText');
+            btnText.textContent = 'Copied to Clipboard!';
+            setTimeout(() => {
+                btnText.textContent = '1. Copy Order Details';
+            }, 2500);
+        }
+
+        // FAQ Accordion Toggle
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+    </script>
+</body>
+</html>
